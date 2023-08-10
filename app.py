@@ -17,6 +17,14 @@ app.secret_key = "pthttm"
 def notFound(e):
     return render_template("404.html")
 
+def checkUserLogin(func):
+    @wraps(func)
+    def inner(*arg,**kwargs):
+        if session.__contains__('username'):
+            return func(*arg,**kwargs)
+        else:
+            return redirect('/')
+    return inner
 
 def checkAdminLogin(func):
     @wraps(func)
@@ -33,16 +41,19 @@ def checkAdminLogin(func):
 
 
 @app.route("/home")
+@checkUserLogin
 def home():
     return render_template("home_main.html")
 
 
 @app.route("/home_record")
+@checkUserLogin
 def home_record():
     return render_template("home_record.html")
 
 
 @app.route("/home_upload")
+@checkUserLogin
 def home_upload():
     return render_template("home_upload.html")
 
@@ -50,6 +61,7 @@ def home_upload():
 app.config['UPLOAD_FOLDER'] = 'Sounds'  # Thư mục lưu trữ tệp tải lên
 
 @app.route('/upload', methods=['POST'])
+@checkUserLogin
 def upload_file():
     if 'audio_data' not in request.files:
         return 'Không có tệp nào được tải lên.'
@@ -321,7 +333,7 @@ def fakeVoiceDetection():
 
     file_exists= os.path.exists(file_path)
     if file_exists == False:
-        return 'Vui lòng upload lên hệ thống trước khi nhận dạng'
+        return '<h1 style= "text-align:center">Vui lòng upload lên hệ thống trước khi nhận dạng</h1>'
 
     service_DAO = ServiceDAO()
     result = service_DAO.fake_voice_detection(file_path)
@@ -329,11 +341,9 @@ def fakeVoiceDetection():
     os.remove(file_path)
 
     if result == '1':
-        return 'Giọng nói thật'
-    return 'Giọng nói giả mạo'
+        return '<h1 style= "text-align:center">Giọng nói thật</h1>'
+    return '<h1 style= "text-align:center">Giọng nói giả mạo</h1>'
 
-
-# main
 
 if __name__ == "__main__":
     app.run(debug=True)
