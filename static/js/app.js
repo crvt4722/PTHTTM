@@ -5,7 +5,7 @@ var gumStream; 						//stream from getUserMedia()
 var rec; 							//Recorder.js object
 var input; 							//MediaStreamAudioSourceNode we'll be recording
 
-// shim for AudioContext when it's not avb.
+// shim for AudioContext when it's not avb. 
 var AudioContext = window.AudioContext || window.webkitAudioContext;
 var audioContext //audio context to help us record
 
@@ -28,7 +28,7 @@ function startRecording() {
 	var constraints = { audio: true, video: false }
 
 	/*
-	  Disable the record button until we get a success or fail from getUserMedia()
+	  Disable the record button until we get a success or fail from getUserMedia() 
   */
 
 	recordButton.disabled = true;
@@ -36,7 +36,7 @@ function startRecording() {
 	pauseButton.disabled = false
 
 	/*
-		We're using the standard promise based getUserMedia()
+		We're using the standard promise based getUserMedia() 
 	*/
 
 	navigator.mediaDevices.getUserMedia(constraints).then(function (stream) {
@@ -46,10 +46,11 @@ function startRecording() {
 			create an audio context after getUserMedia is called
 			sampleRate might change after getUserMedia is called, like it does on macOS when recording through AirPods
 			the sampleRate defaults to the one set in your OS for your playback device
+
 		*/
 		audioContext = new AudioContext();
 
-		//update the format
+		//update the format 
 		document.getElementById("formats").innerHTML = "Format: 1 channel pcm @ " + audioContext.sampleRate / 1000 + "kHz"
 
 		/*  assign to gumStream for later use  */
@@ -58,7 +59,7 @@ function startRecording() {
 		/* use the stream */
 		input = audioContext.createMediaStreamSource(stream);
 
-		/*
+		/* 
 			Create the Recorder object and configure to record mono sound (1 channel)
 			Recording 2 channels  will double the file size
 		*/
@@ -126,10 +127,10 @@ function createDownloadLink(blob) {
 	au.controls = true;
 	au.src = url;
 
-	//save to disk link
-	link.href = url;
-	link.download = filename + ".wav"; //download forces the browser to donwload the file using the  filename
-	link.innerHTML = "Save to disk";
+	// //save to disk link
+	// link.href = url;
+	// link.download = filename + ".wav"; //download forces the browser to donwload the file using the  filename
+	// link.innerHTML = "Save to disk";
 
 	//add the new audio element to li
 	li.appendChild(au);
@@ -139,6 +140,25 @@ function createDownloadLink(blob) {
 
 	//add the save to disk link to li
 	li.appendChild(link);
+
+	//upload link
+	var upload = document.createElement('a');
+	upload.href = "#";
+	upload.innerHTML = "Upload";
+	upload.addEventListener("click", function (event) {
+		var xhr = new XMLHttpRequest();
+		xhr.onload = function (e) {
+			if (this.readyState === 4) {
+				console.log("Server returned: ", e.target.responseText);
+			}
+		};
+		var fd = new FormData();
+		fd.append("audio_data", blob, filename);
+		xhr.open("POST", "./upload", true);
+		xhr.send(fd);
+	})
+	li.appendChild(document.createTextNode(" "))//add a space in between
+	li.appendChild(upload)//add the upload link to li
 
 	//add the li element to the ol
 	recordingsList.appendChild(li);

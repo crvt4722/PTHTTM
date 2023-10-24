@@ -315,6 +315,23 @@ def trainRetrainModel():
     flash('Train model successfully!')
     return redirect(f"/manager-model")
 
+@app.route("/fake-voice-detection")
+def fakeVoiceDetection():
+    file_path = 'Sounds/' + session['username']+'.wav'
+
+    file_exists= os.path.exists(file_path)
+    if file_exists == False:
+        return 'Vui lòng upload lên hệ thống trước khi nhận dạng'
+
+    service_DAO = ServiceDAO()
+    result = service_DAO.fake_voice_detection(file_path)
+
+    os.remove(file_path)
+
+    if result == '1':
+        return 'Giọng nói thật'
+    return 'Giọng nói giả mạo'
+
 
 # main
 

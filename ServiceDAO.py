@@ -34,14 +34,14 @@ class ServiceDAO:
         self.mycursor.execute(sql, val)
         self.mydb.commit()
 
-    def fake_voice_detection(self):
+    def fake_voice_detection(self, file_path):
         # Get the active model's id.
 
         model_DAO = ModelDAO()
         active_model = model_DAO.getActiveModel()
         id = active_model.id
 
-        return fake_voice_regconition(file_path= 'data/wav/fake_voice/fake1_5.wav', model_id= id)
+        return fake_voice_regconition(file_path, model_id= id)
 
 # service_DAO = ServiceDAO()
 # # service_DAO.train_or_retrain()
