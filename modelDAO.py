@@ -15,6 +15,7 @@ class ModelDAO:
             host=host, user=user, password=password, database=database
         )
         self.db.autocommit = True
+        self.mycursor = self.db.cursor()
 
     def getAllModel(self):
         q = f"select * from {self._tableName}"
@@ -93,3 +94,12 @@ class ModelDAO:
         cursor = self.db.cursor()
         cursor.execute(q)
         return cursor.fetchone()[0] == 0
+
+    def getLastModelId(self):
+        sql = 'SELECT id FROM model ORDER BY id DESC'
+        self.mycursor.execute(sql)
+        myresult = self.mycursor.fetchall()
+
+        if len(myresult) == 0:
+            return 0
+        return myresult[0][0]

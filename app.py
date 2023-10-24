@@ -5,6 +5,9 @@ from label import LabelDAO
 from model import Model
 from modelDAO import ModelDAO
 from functools import wraps
+from ServiceDAO import  ServiceDAO
+import os
+from werkzeug.utils import secure_filename
 
 app = Flask(__name__)
 app.secret_key = "pthttm"
@@ -31,7 +34,35 @@ def checkAdminLogin(func):
 
 @app.route("/home")
 def home():
-    return render_template("home.html")
+    return render_template("home_main.html")
+
+
+@app.route("/home_record")
+def home_record():
+    return render_template("home_record.html")
+
+
+@app.route("/home_upload")
+def home_upload():
+    return render_template("home_upload.html")
+
+#upload file
+app.config['UPLOAD_FOLDER'] = 'Sounds'  # Thư mục lưu trữ tệp tải lên
+
+@app.route('/upload', methods=['POST'])
+def upload_file():
+    if 'audio_data' not in request.files:
+        return 'Không có tệp nào được tải lên.'
+
+    file = request.files['audio_data']
+
+    if file.filename == '':
+        return 'Không có tệp nào được chọn.'
+
+    if file:
+        filename = session['username']+'.wav'  # Tên tệp lưu trữ (sound.wav)
+        file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+        return 'Tải lên và lưu tệp thành công.'
 
 
 @app.route("/manager")
@@ -274,6 +305,15 @@ def activeModel(id):
     mess = dao.activeModel(id)
     flash(mess)
     return redirect(f"/manager-model/{id}")
+
+@app.route("/manager-model/train-retrain")
+@checkAdminLogin
+def trainRetrainModel():
+    # flash('This operation can take a few minutes!')
+    service_DAO = ServiceDAO()
+    service_DAO.train_or_retrain()
+    flash('Train model successfully!')
+    return redirect(f"/manager-model")
 
 
 # main
