@@ -26,6 +26,12 @@ header {
     border-bottom: none;
 }
 
+header p {
+    float: right;
+    font-weight: bold;
+    margin-right: 20px;
+}
+
 header h1 {
     background-color: #ccc;
     margin: 0;
@@ -55,7 +61,7 @@ red {
 
 #controls {
     display: flex;
-    margin-top: 32px;
+    margin-top: 50px;
     max-width: 300px;
     margin-left: 25px;
 }
