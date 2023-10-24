@@ -2,9 +2,9 @@ import mysql.connector
 from model import Model
 
 host = "localhost"
-user = "crvt4722"
-password = "04072002"
-database = "fake_voice_detection"
+user = "root"
+password = "admin"
+database = "pthttm"
 
 
 class ModelDAO:

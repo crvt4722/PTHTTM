@@ -16,7 +16,7 @@ class Sample:
 class SampleDAO:
     def __init__(self):
         self.db = mysql.connector.connect(
-            host="localhost", user="crvt4722", password="04072002", database="fake_voice_detection"
+            host="localhost", user="root", password="admin", database="pthttm"
         )
         self.cursor = self.db.cursor()
 

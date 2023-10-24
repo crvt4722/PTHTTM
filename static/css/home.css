@@ -17,7 +17,7 @@ body {
 }
 
 .container {
-    width: 540px;
+    width: 560px;
     margin: 0 auto;
 }
 
@@ -69,7 +69,7 @@ red {
 button {
     flex-grow: 1;
     height: 3rem;
-    min-width: 10rem;
+    min-width: 8rem;
     border: none;
     border-radius: 0.15rem;
     background: #ed341d;
@@ -134,4 +134,24 @@ li {
 
 .container p {
     margin-left: 25px;
+}
+
+#controls .back-btn {
+    text-decoration: none;
+    background-color: rgba(156, 36, 36, 0.582);
+    padding: 11px 40px;
+    border: 1px solid #ccc;
+    /* border-radius: 25px; */
+    color: #000;
+    font-weight: 500;
+    font-family: "Rocher";
+    position: absolute;
+    /* margin-top: 8px; */
+    margin-left: 390px;
+    /* font-size: 10px; */
+    position: absolute;
+}
+
+#controls .back-btn:hover {
+    background-color: rgba(156, 36, 36, 0.692);
 }

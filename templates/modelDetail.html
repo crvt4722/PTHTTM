@@ -7,15 +7,16 @@
         <i class="bi bi-upload"></i>
         Update
     </button>
-    <button type="button" class="btn btn-light btn-outline-danger" data-bs-toggle="modal" data-bs-target="#deleteModelModal">
+    <button type="button" class="btn btn-light btn-outline-danger" data-bs-toggle="modal"
+        data-bs-target="#deleteModelModal">
         <i class="bi bi-trash"></i>
         Delete
     </button>
     {% if model.status==0: %}
-        <button type="button" onclick="activeModel('{{model.id}}')" class="btn btn-light btn-outline-success">
-            <i class="bi bi-check-square"></i>
-            Active
-        </button>
+    <button type="button" onclick="activeModel('{{model.id}}')" class="btn btn-light btn-outline-success">
+        <i class="bi bi-check-square"></i>
+        Active
+    </button>
     {% endif %}
 </div>
 {% endblock %}
@@ -71,8 +72,8 @@
     function submitModel() {
         document.getElementById('model').submit()
     }
-    function activeModel(id){
-        window.location.href = "/manager-model/active/"+id;
+    function activeModel(id) {
+        window.location.href = "/manager-model/active/" + id;
     }
 </script>
 {% endblock %}

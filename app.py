@@ -5,6 +5,8 @@ from label import LabelDAO
 from model import Model
 from modelDAO import ModelDAO
 from functools import wraps
+import os
+from werkzeug.utils import secure_filename
 
 app = Flask(__name__)
 app.secret_key = "pthttm"
@@ -31,7 +33,15 @@ def checkAdminLogin(func):
 
 @app.route("/home")
 def home():
-    return render_template("home.html")
+    return render_template("home_main.html")
+
+@app.route("/home_record")
+def home_record():
+    return render_template("home_record.html")
+
+@app.route("/home_upload")
+def home_upload():
+    return render_template("home_upload.html")
 
 
 @app.route("/manager")
@@ -275,6 +285,24 @@ def activeModel(id):
     flash(mess)
     return redirect(f"/manager-model/{id}")
 
+
+#upload file
+app.config['UPLOAD_FOLDER'] = 'Sounds'  # Thư mục lưu trữ tệp tải lên
+
+@app.route('/upload', methods=['POST'])
+def upload_file():
+    if 'audio_data' not in request.files:
+        return 'Không có tệp nào được tải lên.'
+    
+    file = request.files['audio_data']
+
+    if file.filename == '':
+        return 'Không có tệp nào được chọn.'
+
+    if file:
+        filename = session['username']+'.wav'  # Tên tệp lưu trữ (sound.wav)
+        file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+        return 'Tải lên và lưu tệp thành công.'
 
 # main
 
