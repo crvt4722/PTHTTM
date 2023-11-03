@@ -43,7 +43,3 @@ class ServiceDAO:
 
         return fake_voice_regconition(file_path, model_id= id)
 
-# service_DAO = ServiceDAO()
-# # service_DAO.train_or_retrain()
-#
-# print(service_DAO.fake_voice_detection())

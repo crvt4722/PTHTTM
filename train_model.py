@@ -48,7 +48,7 @@ def train_model():
     traindf["voice_location"]=traindf["voice_location"].apply(append_ext)
 
 
-    print(traindf)
+    
     datagen=ImageDataGenerator(rescale=1./255.,validation_split=0.25)
 
     # Load generator train

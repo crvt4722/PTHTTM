@@ -43,6 +43,7 @@ def checkAdminLogin(func):
 @app.route("/home")
 @checkUserLogin
 def home():
+    session['detect_upload'] = ''
     return render_template("home_main.html")
 
 
@@ -54,7 +55,7 @@ def home_record():
 
 @app.route("/home_upload")
 @checkUserLogin
-def home_upload():
+def home_upload():    
     return render_template("home_upload.html")
 
 #upload file
@@ -63,19 +64,64 @@ app.config['UPLOAD_FOLDER'] = 'Sounds'  # Thư mục lưu trữ tệp tải lên
 @app.route('/upload', methods=['POST'])
 @checkUserLogin
 def upload_file():
+    
+    result = ''
     if 'audio_data' not in request.files:
-        return 'Không có tệp nào được tải lên.'
+        result =  'Không có tệp nào được tải lên.'
 
     file = request.files['audio_data']
 
     if file.filename == '':
-        return 'Không có tệp nào được chọn.'
+        result =  'Không có tệp nào được chọn'
 
     if file:
         filename = session['username']+'.wav'  # Tên tệp lưu trữ (sound.wav)
         file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-        return 'Tải lên và lưu tệp thành công.'
 
+        file_path = 'Sounds/'  + filename
+        service_DAO = ServiceDAO()
+        voice_detect = service_DAO.fake_voice_detection(file_path)
+
+        os.remove(file_path)
+
+        if voice_detect == '1':   
+            result = 'Giọng nói thật'
+        else: result = 'Giọng nói giả mạo'
+          
+
+    session['detect_upload'] = result
+    return redirect("home_upload")        
+
+@app.route('/record', methods = ['POST'])
+@checkUserLogin
+def record_result():    
+    result = ''
+    if 'audio_data' not in request.files:
+        result =  'Không có tệp nào được tải lên.'
+
+    file = request.files['audio_data']
+
+    if file.filename == '':
+        result =  'Không có tệp nào được chọn'
+
+    if file:
+        filename = session['username']+'.wav'  # Tên tệp lưu trữ (sound.wav)
+        file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+
+        file_path = 'Sounds/'  + filename
+        service_DAO = ServiceDAO()
+        voice_detect = service_DAO.fake_voice_detection(file_path)
+
+        os.remove(file_path)
+
+        if voice_detect == '1':   
+            result = 'Giọng nói thật'
+        else: result = 'Giọng nói giả mạo'
+          
+
+    session['detect_upload'] = result
+    print(session['detect_upload'] )
+    return redirect("home_record")    
 
 @app.route("/manager")
 @checkAdminLogin
@@ -147,6 +193,20 @@ def managerSample():
     sampleList = sampleDAO.getAllSample()
     return render_template("managerSample.html", sampleList=sampleList)
 
+@app.route("/train-retrain", methods=["GET", "POST"])
+@checkAdminLogin
+def trainRetrainHTML():
+    if request.method == "POST":
+        name = request.form["key"]
+        sampleDAO = SampleDAO()
+        sampleList = sampleDAO.findSampleByName(name)
+        if sampleList:
+            return render_template("managerSample.html", sampleList=sampleList)
+        else:
+            flash("Sample not found", "warning")
+    sampleDAO = SampleDAO()
+    sampleList = sampleDAO.getAllSample()
+    return render_template("train_retrain.html", sampleList=sampleList)
 
 @app.route("/manager-sample/add", methods=["POST", "GET"])
 @checkAdminLogin
@@ -327,22 +387,7 @@ def trainRetrainModel():
     flash('Train model successfully!')
     return redirect(f"/manager-model")
 
-@app.route("/fake-voice-detection")
-def fakeVoiceDetection():
-    file_path = 'Sounds/' + session['username']+'.wav'
 
-    file_exists= os.path.exists(file_path)
-    if file_exists == False:
-        return '<h1 style= "text-align:center">Vui lòng upload lên hệ thống trước khi nhận dạng</h1>'
-
-    service_DAO = ServiceDAO()
-    result = service_DAO.fake_voice_detection(file_path)
-
-    os.remove(file_path)
-
-    if result == '1':
-        return '<h1 style= "text-align:center">Giọng nói thật</h1>'
-    return '<h1 style= "text-align:center">Giọng nói giả mạo</h1>'
 
 
 if __name__ == "__main__":

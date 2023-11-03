@@ -154,8 +154,15 @@ function createDownloadLink(blob) {
 		};
 		var fd = new FormData();
 		fd.append("audio_data", blob, filename);
-		xhr.open("POST", "./upload", true);
+		xhr.open("POST", "./record", true);
 		xhr.send(fd);
+		// setTimeout(location.reload(), 1000)
+
+		xhr.onreadystatechange = function() {
+			if (xhr.readyState === XMLHttpRequest.DONE ) {
+			  location.reload()
+			}
+		  };
 	})
 	li.appendChild(document.createTextNode(" "))//add a space in between
 	li.appendChild(upload)//add the upload link to li

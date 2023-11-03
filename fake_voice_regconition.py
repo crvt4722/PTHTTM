@@ -25,7 +25,7 @@ def fake_voice_regconition(file_path='data/wav/real_voice/speaker4_10.wav', mode
     image_path = file_folder+image_name+'.png'
 
     # Load image
-    img = image.load_img(image_path, target_size=(64, 64))  # Chỉnh kích thước nếu cần
+    img = image.load_img(image_path, target_size=(64, 64))  # 
 
     # Convert image to numpy array
     img = image.img_to_array(img)
@@ -53,7 +53,8 @@ def fake_voice_regconition(file_path='data/wav/real_voice/speaker4_10.wav', mode
     # print(predictions)
 
     # Remove image out of temporary folder.
-    os.remove(image_path)
+    if os.path.exists(image_path):
+        os.remove(image_path)
     return predictions[0]
 
 # fake_voice_regconition('data/wav/real_voice/speaker1_10.wav')

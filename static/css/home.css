@@ -136,7 +136,7 @@ li {
     margin-left: 25px;
 }
 
-#controls .back-btn {
+#controls .back-btn, .scroll-container .back-btn {
     text-decoration: none;
     background-color: rgba(156, 36, 36, 0.582);
     padding: 11px 40px;
