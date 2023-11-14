@@ -1,4 +1,4 @@
-from flask import Flask,url_for,render_template,request,redirect,url_for,session,flash
+from flask import Flask,url_for,render_template,request,redirect,url_for,session,flash, jsonify
 from sample import SampleDAO, Sample
 from user import UserDAO, User
 from label import LabelDAO
@@ -193,17 +193,9 @@ def managerSample():
     sampleList = sampleDAO.getAllSample()
     return render_template("managerSample.html", sampleList=sampleList)
 
-@app.route("/train-retrain", methods=["GET", "POST"])
+@app.route("/train-retrain")
 @checkAdminLogin
-def trainRetrainHTML():
-    if request.method == "POST":
-        name = request.form["key"]
-        sampleDAO = SampleDAO()
-        sampleList = sampleDAO.findSampleByName(name)
-        if sampleList:
-            return render_template("managerSample.html", sampleList=sampleList)
-        else:
-            flash("Sample not found", "warning")
+def train_retrain():
     sampleDAO = SampleDAO()
     sampleList = sampleDAO.getAllSample()
     return render_template("train_retrain.html", sampleList=sampleList)
@@ -378,12 +370,20 @@ def activeModel(id):
     flash(mess)
     return redirect(f"/manager-model/{id}")
 
-@app.route("/manager-model/train-retrain")
+@app.route("/manager-model/train-retrain", methods = ['POST', 'GET'])
 @checkAdminLogin
 def trainRetrainModel():
+    
+    
+    data = request.get_json()    
+    samples = data.get('samples')
+
+    samples = list(samples)
+    print(samples)
+    
     # flash('This operation can take a few minutes!')
     service_DAO = ServiceDAO()
-    service_DAO.train_or_retrain()
+    service_DAO.train_or_retrain(samples = samples)
     flash('Train model successfully!')
     return redirect(f"/manager-model")
 

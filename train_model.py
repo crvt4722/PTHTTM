@@ -23,9 +23,10 @@ def append_ext(fn):
     fn = fn.split('/')[-1]
     return fn
 
-def train_model():
+def train_model(samples = []):
+    print(samples)
     # First, we convert all audio in database to DataFrame to process easily for the future.
-    initial_csv_label.assign_label_to_voice_from_database()
+    initial_csv_label.assign_label_to_voice_from_database(samples= samples)
 
     train_data_path = 'data/train/'
     test_data_path = 'data/test/'
@@ -148,7 +149,7 @@ def train_model():
     print('Model test!')
 
     model_entity = (last_model_id+1, 'model'+str(last_model_id+1), new_modal_name, datetime.datetime.now(), accuracy, precision,
-                    recall, f1_score_, '', 0, traindf.shape[0])
+                    recall, f1_score_, '', 0, len(samples))
     return Model(model_entity)
 
 

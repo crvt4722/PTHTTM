@@ -66,6 +66,10 @@ class ModelDAO:
         return "Update successful!"
 
     def deleteModel(self, id):
+        q = f'delete from model_sample where Modelid = {id};'
+        cursor = self.db.cursor()
+        cursor.execute(q)
+
         q = f"delete from {self._tableName} where id={id}"
         cursor = self.db.cursor()
         cursor.execute(q)

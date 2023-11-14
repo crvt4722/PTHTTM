@@ -102,8 +102,9 @@ class SampleDAO:
             return True
         except:
             return False
-    def getAllSamples(self):
-        sql = 'SELECT sample.file_path, label.value FROM sample, label WHERE Labelid = label.id'
+    def getAllSamples(self, samples =[178, 192, 200, 201]):
+        sql = "SELECT sample.file_path, label.value FROM sample, label WHERE Labelid = label.id and sample.id IN ({})".format(",".join(map(str, samples)))
+        
         self.cursor.execute(sql)
         myresult = self.cursor.fetchall()
         # print(myresult)

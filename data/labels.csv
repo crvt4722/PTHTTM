@@ -2,7 +2,6 @@ voice_location,label
 data/wav/real_voice/speaker5_7.wav,1
 data/wav/real_voice/speaker2_9.wav,1
 data/wav/real_voice/speaker3_1.wav,1
-data/wav/real_voice/speaker1_5.wav,1
 data/wav/real_voice/speaker4_1.wav,1
 data/wav/real_voice/speaker4_8.wav,1
 data/wav/real_voice/speaker3_10.wav,1
@@ -20,7 +19,6 @@ data/wav/real_voice/speaker5_8.wav,1
 data/wav/real_voice/speaker4_9.wav,1
 data/wav/real_voice/speaker1_6.wav,1
 data/wav/real_voice/speaker3_3.wav,1
-data/wav/real_voice/speaker1_1.wav,1
 data/wav/real_voice/speaker2_4.wav,1
 data/wav/real_voice/speaker4_7.wav,1
 data/wav/real_voice/speaker5_10.wav,1
@@ -79,8 +77,6 @@ data/wav/fake_voice/fake4_10.wav,0
 data/wav/fake_voice/fake1_5.wav,0
 data/wav/fake_voice/fake1_6.wav,0
 data/wav/fake_voice/fake4_4.wav,0
-data/wav/fake_voice/fake2_5.wav,0
-data/wav/fake_voice/fake3_4.wav,0
 data/wav/fake_voice/fake3_5.wav,0
 data/wav/fake_voice/fake4_6.wav,0
 data/wav/fake_voice/fake5_5.wav,0

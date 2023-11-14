@@ -35,7 +35,7 @@ def assign_label_to_voice():
 
     print(f'CSV file "{labels_file_name}" has been created successfully.')
 
-def assign_label_to_voice_from_database():
+def assign_label_to_voice_from_database(samples = []):
 
 
     # Assign label for these wav files.
@@ -44,8 +44,8 @@ def assign_label_to_voice_from_database():
     labels.append(columns_name)
 
     sample_dao = SampleDAO()
-    samples = sample_dao.getAllSamples()
-    for sample in samples:
+    samples_result = sample_dao.getAllSamples(samples=samples)
+    for sample in samples_result:
         row = [sample[0], sample[1]]
         labels.append(row)
 

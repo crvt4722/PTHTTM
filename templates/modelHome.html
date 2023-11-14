@@ -22,7 +22,7 @@
     <div class="model-options">
         <div class="active-model">
             <div>Active model:&nbsp;<b>{{activeModel.name}}</b>&nbsp;</div>
-            <button type="button" class="btn btn-info"><a href="/manager-model/train-retrain">Train/Retrain</a></button>
+            <button type="button" class="btn btn-info"><a href="/train-retrain">Train/Retrain</a></button>
         </div>
         <form class="d-flex" method="POST">
             <div class="d-flex">
@@ -47,6 +47,7 @@
                 <th scope="col">Precision</th>
                 <th scope="col">Recall</th>
                 <th scope="col">F1-score</th>
+                <th scope="col">Sample Quantity</th>
                 <th scope="col">Action</th>
             </tr>
         </thead>
@@ -61,6 +62,7 @@
                 <td>{{model.pre}}</td>
                 <td>{{model.recall}}</td>
                 <td>{{model.f1_score}}</td>
+                <td style="text-align: center;">{{model.quanlity}}</td>
                 <td style="text-align: center;">
                     <a class="btn btn-success btn-outline-light" href="/manager-model/{{model.id}}">
                         <i class="bi bi-pencil-fill"></i>
